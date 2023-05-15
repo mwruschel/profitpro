@@ -1,4 +1,13 @@
-# profitpro
+# ProfitPro - Automation
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+//                            Max W. Ruschel                            //
+//                             Placas - PA                              // 
+//                                                                      //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
 Signal robot for Profitpro
 
 Media Movel Exponencial - 14
