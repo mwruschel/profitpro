@@ -1,8 +1,8 @@
 Input
 
-Alvo(100);
-MediaCurta(12);
-MediaLonga(21);
+Alvo(160);
+MediaCurta(5);
+MediaLonga(14);
 
 Var
 
