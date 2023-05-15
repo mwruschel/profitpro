@@ -1,0 +1,44 @@
+Input
+
+Alvo(100);
+MediaCurta(12);
+MediaLonga(21);
+
+Var
+
+MediaC, MediaL : float;
+
+Inicio
+
+MediaC := MediaExp(MediaCurta, Fechamento);
+MediaL := MediaExp(MediaLonga, Fechamento);
+
+	se (IsBought) entao
+		
+  Inicio
+    Se (MediaC[1] > MediaL[1]) e (MediaC[0] < MediaL[0]) entao
+      ReversePosition;
+
+    SellToCoverLimit(BuyPrice+Alvo);
+  Fim;
+
+  se (IsSold) entao
+		  Inicio
+      Se (MediaC[1] < MediaL[1]) e (MediaC[0] > MediaL[0]) entao
+        ReversePosition;
+
+      			BuyToCoverLimit(SellPrice+Alvo);
+		  Fim;
+
+  Se (HasPosition = False) entao
+		  Inicio
+
+    // Cruzamento para baixo
+    Se (MediaC[1] > MediaL[1]) e (MediaC[0] < MediaL[0]) entao
+      SellShortAtMarket;
+
+    // Cruzamnto para Cima
+    Se (MediaC[1] < MediaL[1]) e (MediaC[0] > MediaL[0]) entao
+      BuyAtMarket;
+		  Fim;
+Fim;
