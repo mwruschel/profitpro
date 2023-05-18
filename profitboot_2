@@ -1,0 +1,83 @@
+//////////////////////////////////////////////////////////////////
+//                          ProfitBoot                          //
+//                                                              //
+//                  Criado por; Max W. Ruschel                  //
+//                          18/05/2023                          //
+//                                                              //
+//////////////////////////////////////////////////////////////////
+
+Input
+  MediaCurta(12);
+  MediaLonga(24);
+  
+  StopLoss(100);
+  StopGain(500);
+  Proteger(200);
+  
+  HorarioInicial(0930);
+  HorarioFinal(1730);
+Var
+  vMediaCurta,vMediaLonga : Float;
+  
+  // Begin Inicial
+Begin
+  
+  // CALCULO DAS MEDIAS
+  vMediaCurta := MediaExp(MediaCurta,close);
+  vMediaLonga := MediaExp(MediaLonga,close);
+  
+  // INSERE AS MEDIAS NA TELA
+  Plot(vmediaCurta);
+  Plot2(vmediaLonga);
+  
+  // REGRA DE COLORAÇÃO
+  if (IsBought) then
+    PaintBar(Clgreen)
+  else if (IsSold) then
+    PaintBar(Clred)
+  else 
+    PaintBar(ClBranco);
+  
+  // HORARIO OPERACIONAL
+  if (time > horariofinal) or (time < HorarioInicial) then
+    begin
+      PaintBar(Clbranco);
+      ClosePosition;
+    end
+  else 
+    begin
+      
+  // Abre horario operacional
+      if (IsBought or IsSold) then
+  // Está posicionado
+        begin
+          if (IsBought) and (vMediaCurta < vMediaLonga) then
+            ReversePosition
+          else if (IsSold) and (vMediaCurta > vMediaLonga) then
+            ReversePosition;
+          if (IsBought) and (close - BuyPrice >= stopgain) then
+            ClosePosition
+          else if (IsBought) and (BuyPrice - close >= stoploss) then
+            ClosePosition
+          else if (IsSold) and (SellPrice - close >= stopgain) then
+            ClosePosition
+          else if (IsSold) and (close - SellPrice >= stoploss) then
+            ClosePosition;
+   // Protege Operação
+          if (IsSold) and (SellPrice - close >= proteger) and (close > close[5]) then
+            ClosePosition
+          else if (IsBought) and (close - BuyPrice >= proteger) and (close < close[5]) then
+            ClosePosition;
+        end
+      else 
+   //Está Zerado
+        begin
+          if (vMediaCurta > vMediaLonga) and (vMediaCurta[1] < vMediaLonga[1]) then
+            BuyAtMarket
+          else if (vMediaCurta < vMediaLonga) and (vMediaCurta[1] > vMediaLonga[1]) then
+            SellShortAtMarket;
+        end;
+    end;
+   // Fecha horario operacional
+End;
+   // End Final
